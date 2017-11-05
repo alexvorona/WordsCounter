@@ -9,9 +9,9 @@ namespace WordCounter
 {
     public class WordCounter
     {
-        static ConcurrentDictionary<string, int> words = new ConcurrentDictionary<string, int>();
+        private ConcurrentDictionary<string, int> words;
        
-        private static void DoCount(string row)
+        private void DoCount(string row)
         {
             Regex regex = new Regex(@"(\w*)");            
 
@@ -23,6 +23,7 @@ namespace WordCounter
 
         public void CountWords(IEnumerable<string> rows)
         {
+            words = new ConcurrentDictionary<string, int>();
             Parallel.ForEach(rows, line =>
             {
                 DoCount(line);
