@@ -12,9 +12,11 @@ namespace WordCounter
         {
             var counter = new WordCounter();
 
-            counter.Read("data.txt");
-            
-            counter.SaveResult("results.txt");           
+            var manager = new FileManager();
+
+            counter.CountWords(manager.GetLines("data.txt"));
+
+            manager.SaveResult("results.txt", counter.GetLines());           
             
         }
     }
