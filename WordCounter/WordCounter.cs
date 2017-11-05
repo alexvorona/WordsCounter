@@ -30,6 +30,10 @@ namespace WordCounter
         }
         public void SaveResult(string fileName)
         {
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
             var task = Task.Factory.StartNew(() =>
             {
                 File.WriteAllLines(fileName,

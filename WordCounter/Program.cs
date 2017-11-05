@@ -11,9 +11,9 @@ namespace WordCounter
         static void Main(string[] args)
         {
             var counter = new WordCounter();
-            counter.Read("data1.txt");
 
-            //todo удалить файл если есть!
+            counter.Read("data.txt");
+            
             counter.SaveResult("results.txt");           
             
         }
