@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace WordCounter
@@ -9,14 +10,15 @@ namespace WordCounter
     public class WordCounter
     {
         static ConcurrentDictionary<string, int> words = new ConcurrentDictionary<string, int>();
-        private static char[] separators = new Char[] { ' ', '.', ',', '-', '«', '»', ':' };
+       
         private static void DoCount(string row)
         {
-            var res = row.Split(separators, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var word in res)
+            Regex regex = new Regex(@"(\w*)");            
+
+            foreach (Match match in regex.Matches(row).Cast<Match>().Where(x => !String.IsNullOrEmpty(x.Value)))
             {
-                words.AddOrUpdate(word.ToLower(), 1, (k, v) => v + 1);
-            }
+                words.AddOrUpdate(match.Value.ToLower(), 1, (k, v) => v + 1);
+            }          
         }
 
         public void CountWords(IEnumerable<string> rows)
