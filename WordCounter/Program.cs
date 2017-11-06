@@ -7,12 +7,13 @@ namespace WordCounter
         {
             var counter = new WordCounter();
 
-            var manager = new FileManager();
+            var manager = new FileManager();           
 
-            counter.CountWords(manager.GetLines("data.txt"));
+            var words = counter.CountWords(manager.GetLines("data.txt"));
 
-            manager.SaveResult("results.txt", counter.GetLines());           
-            
+            var sorter = new WordCollectionSorter();            
+
+            manager.SaveResult("results.txt", sorter.GetLines(words));            
         }
     }
 }

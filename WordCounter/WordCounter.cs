@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 namespace WordCounter
 {
     public class WordCounter
-    {
-        private ConcurrentDictionary<string, int> words;
-       
-        private void DoCount(string row)
+    {      
+        private void DoCount(string row, ref ConcurrentDictionary<string, int> words)
         {
             Regex regex = new Regex(@"(\w*)");            
 
@@ -21,26 +19,14 @@ namespace WordCounter
             }          
         }
 
-        public void CountWords(IEnumerable<string> rows)
+        public ConcurrentDictionary<string, int> CountWords(IEnumerable<string> rows)
         {
-            words = new ConcurrentDictionary<string, int>();
+            ConcurrentDictionary<string, int> words = new ConcurrentDictionary<string, int>();
             Parallel.ForEach(rows, line =>
             {
-                DoCount(line);
+                DoCount(line, ref words);
             });
-        }
-
-        public string[] GetLines()
-        {
-            var AllLines = new string[words.Count];
-
-            int i = 0;
-            foreach (var item in words.OrderByDescending(x => x.Value).ThenBy(x => x.Key))
-            {
-                AllLines[i] = $"{item.Key} {item.Value}";
-                i++;
-            }
-            return AllLines;
-        }
+            return words;
+        }       
     }   
 }
