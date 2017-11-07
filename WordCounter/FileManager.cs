@@ -9,15 +9,16 @@ namespace WordCounter
 {
     public class FileManager
     {
-        public IEnumerable<string> GetLines(string filename)
+        private const int messageDelay = 2000;
+        public IEnumerable<string> GetLines(string fileName)
         {
-            if (!File.Exists(filename))
+            if (!File.Exists(fileName))
             {
-                Console.WriteLine("File 'data.txt' not found!");
-                Task.Delay(2000).Wait();
+                Console.WriteLine($"File {fileName} not found!");
+                Task.Delay(messageDelay).Wait();
                 return new string[] { };
             }
-            return File.ReadLines(filename, Encoding.Default).Where(r => !string.IsNullOrEmpty(r));
+            return File.ReadLines(fileName, Encoding.Default).Where(r => !string.IsNullOrEmpty(r));
         }
         public void SaveResult(string fileName, string[] lines)
         {
@@ -30,6 +31,8 @@ namespace WordCounter
                 File.WriteAllLines(fileName, lines);
             });
             task.Wait();
+            Console.WriteLine($"File {fileName} saved successfully");
+            Task.Delay(messageDelay).Wait();
         }
 
 
